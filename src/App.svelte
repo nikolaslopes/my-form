@@ -1,30 +1,84 @@
 <script>
-	export let name;
+	// JS here
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+	/* CSS here */
+  form {
+    --text-color: #afafaf;
+    max-width: 500px;
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+  .field {
+    width: 100%;
+    position: relative;
+    border-bottom: 2px dashed var(--text-color);
+    margin: 4rem auto 1rem;
+  }
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .label {
+    color: var(--text-color);
+    font-size: 1.2rem;
+  }
+
+  .input {
+    outline: none;
+    border: none;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .input:valid {
+    color: yellowgreen;
+  }
+
+  .input:invalid {
+    color: orangered;
+  }
+
+  /* border animation */
+
+  .field::after {
+    content: "";
+    position: relative;
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: #d16dff;
+    transform: scaleX(0);
+    transform-origin: 0%;
+    transition: transform 500ms ease;
+    top: 2px;
+  }
+
+  .field:focus-within {
+    border-color: transparent;
+  }
+
+  .field:focus-within::after {
+    transform: scaleX(1);
+  }
+
 </style>
+
+<!-- HTML here -->
+
+<main>
+	<form>
+		<div class="field">
+      <input type="email" name="email" class="input" placeholder="" />
+      <label for="email" class="label">Email</label>
+		</div>
+
+		<div class="field">
+      <input type="password" class="input" placeholder="" />
+      <label for="password" class="label">Password</label>
+		</div>
+	</form>
+</main>
