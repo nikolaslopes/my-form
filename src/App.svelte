@@ -14,6 +14,7 @@
     position: relative;
     border-bottom: 2px dashed var(--text-color);
     margin: 4rem auto 1rem;
+    transition: 500ms;
   }
 
   .label {
@@ -65,6 +66,22 @@
     transform: scaleX(1);
   }
 
+  /* label animation */
+
+  .label {
+    z-index: -1;
+    position: absolute;
+    transform: translateY(-2rem);
+    transform-origin: 0%;
+    transition: transform 400ms;
+  }
+
+  .field:focus-within .label,
+  .input:not(:placeholder-shown) + .label {
+    transform: scale(0.8) translateY(-5rem);
+    opacity: 1;
+  }
+
 </style>
 
 <!-- HTML here -->
@@ -72,12 +89,12 @@
 <main>
 	<form>
 		<div class="field">
-      <input type="email" name="email" class="input" placeholder="" />
+      <input type="email" name="email" class="input" placeholder=" " />
       <label for="email" class="label">Email</label>
 		</div>
 
 		<div class="field">
-      <input type="password" class="input" placeholder="" />
+      <input type="password" class="input" placeholder=" " />
       <label for="password" class="label">Password</label>
 		</div>
 	</form>
