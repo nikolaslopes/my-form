@@ -43,7 +43,7 @@
     color: orangered;
   }
 
-  /* border animation */
+  /* border animation  */
 
   .field::after {
     content: "";
