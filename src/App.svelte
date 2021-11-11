@@ -1,5 +1,26 @@
 <script>
 	// JS here
+  const strengthText = ["", "ruim 💩", "ok 😐", "melhorou 🙂", "brabo apenas💪"];
+
+  let strength = 0;
+  let validations = [];
+  let showPassword = false;
+
+  function validatePassword(event) {
+    const password = event.target.value;
+
+    validations = [
+      (password.length > 5),
+      (password.search(/[A-Z]/) > -1),
+      (password.search(/[0-9]/) > -1),
+      (password.search(/[$&+,:;=?@#]/) > -1),
+    ]
+
+    strength = validations.reduce((accumulatorValue, currentValue) =>
+      accumulatorValue + currentValue
+    )
+  }
+
 </script>
 
 <style>
@@ -7,6 +28,10 @@
   form {
     --text-color: #afafaf;
     max-width: 500px;
+  }
+
+  ul {
+    list-style: none;
   }
 
   .field {
@@ -82,20 +107,132 @@
     opacity: 1;
   }
 
+  /* strength meter */
+
+  .strength {
+    display: flex;
+    height: 20px;
+    width: 100%;
+  }
+
+  .bar {
+    margin-right: 5px;
+    height: 100%;
+    width: 25%;
+    transition: box-shadow 500ms;
+    box-shadow: inset 0px 20px #1f1f1f;
+  }
+
+  .bar-show {
+    box-shadow: none;
+  }
+
+  .bar-1 {
+    background: linear-gradient(to right, red, orangered);
+  }
+
+  .bar-2 {
+    background: linear-gradient(to right, orangered, yellow);
+  }
+
+  .bar-3 {
+    background: linear-gradient(to right, yellow, yellowgreen);
+  }
+
+  .bar-4 {
+    background: linear-gradient(to right, yellowgreen, green);
+  }
+  .strength-text {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+  /* buttons styles */
+
+  button {
+    margin-top: 2rem;
+    padding: 10px 30px;
+    font-weight: bold;
+    border: 2px solid greenyellow;
+    color: greenyellow;
+    border-radius: 100px;
+    background: transparent;
+    transition: all 1000ms;
+  }
+
+  button:disabled {
+    border-color: var(--text-color);
+    color: var(--text-color);
+  }
+  .toggle-password {
+    position: absolute;
+    cursor: help;
+    font-size: 0.8rem;
+    right: 0.25rem;
+    bottom: 0.5rem;
+  }
+
 </style>
 
 <!-- HTML here -->
 
 <main>
-	<form>
+	<form autocomplete="off">
 		<div class="field">
-      <input type="email" name="email" class="input" placeholder=" " />
-      <label for="email" class="label">Email</label>
+      <input
+        type="email"
+        name="email"
+        class="input"
+        placeholder=" "
+      />
+      <label for="email"  class="label">Email</label>
 		</div>
 
 		<div class="field">
-      <input type="password" class="input" placeholder=" " />
+      <input
+        type={showPassword ? 'text' : 'password'}
+        class="input"
+        placeholder=" "
+        maxlength="10"
+        on:input={validatePassword}
+      />
       <label for="password" class="label">Password</label>
+
+      <span
+        class="toggle-password"
+        on:mouseenter={() => (showPassword = true)}
+        on:mouseleave={() => (showPassword = false)}
+      >
+        {showPassword ? '🙈' : '👀'}
+      </span>
 		</div>
+
+    <div class="strength">
+      <span class="bar bar-1" class:bar-show={strength > 0}></span>
+      <span class="bar bar-2" class:bar-show={strength > 1}></span>
+      <span class="bar bar-3" class:bar-show={strength > 2}></span>
+      <span class="bar bar-4" class:bar-show={strength > 3}></span>
+    </div>
+
+    <div class="strength-text">{strengthText[strength]}</div>
+
+    {#if validations.length}
+      <ul>
+        <li> {validations[0] ? '✅' : '❌'}
+          &nbsp precisa ter no mínimo 5 caracteres
+        </li>
+        <li> {validations[1] ? '✅' : '❌'}
+          &nbsp precisa conter uma letra maiúscula
+        </li>
+        <li> {validations[2] ? '✅' : '❌'}
+          &nbsp precisa conter um número
+        </li>
+        <li> {validations[3] ? '✅' : '❌'}
+          &nbsp precisa conter um dos $&+,:;=?@#
+        </li>
+      </ul>
+    {/if}
+
+    <button disabled={strength < 4}>Logar</button>
 	</form>
 </main>
